@@ -1,0 +1,265 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Clear_Silverlight" mva:VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="Clear_Silverlight_1"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Clear Silverlight" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="Clearing Silverlight cache..." />
+    <ui:WindowScope ApplicationWindow="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" Window="{x:Null}" DisplayName="Attach Window 'iexplore.exe Walmart'" sap2010:WorkflowViewState.IdRef="WindowScope_1" InformativeScreenshot="c143545d939ca37a1b5af45735d0711e" Selector="&lt;html title='Walmart Transportation Management System' /&gt;">
+      <ui:WindowScope.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Boolean" Default="False" Name="SilverlightClear" />
+              <Variable x:TypeArguments="x:Boolean" Default="False" Name="SilverlightCert" />
+            </Sequence.Variables>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe'" sap2010:WorkflowViewState.IdRef="ClickImage_17" KeyModifiers="None" MouseButton="BTN_RIGHT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAJkAAAAhCAYAAADKxQmiAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADOSURBVHhe7dKhSgMAGEXh+04zjCWTyWQy6YKWBQ0yMKysTFhYEYbBYh6CCILIYIgYHPhMdy/wx/+2E75y8tHDy7+BJM2f9waSNHv6M5Ck6eOvgSTdrn4MJGmy/DaQpKvFzkCSLuZbA0k6n30ZSNLZ/aeBJJ3efRhI0snNu4EkHU/eDCRpdP1qIElH442BJA0uNwaSmAxx0nBtIKqMQKcyAp3KCHQqI9CpjECnMgKdygh0KiPQqYxApzICncoIdCoj0KmMQKcyAp3KCLRZ+wAuVjT1fFLTWAAAAABJRU5ErkJggg==" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;html title='Walmart Transportation Management System' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe'" sap2010:WorkflowViewState.IdRef="ClickImage_18" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAADoAAAAPCAYAAAC1DNw2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFWSURBVEhL7VXbEQMhCLQq67Ebi7EXa7EDciAqoF5ek5mbJB878RQWFsG4Ugr8Av5Cvw1aaArgnGMESLiXI3jnIWa0SRD6+l0ILhXjDK/HH0IpGIvj75h43fEhocvzFc58zvmGULxNHyGLwxnfIJQMHfiYlYEmaOsM0TsI8sZloag7zAiwbwie91a8zCX8fYyzXZLnmC/ut3gHQqo8AuYxqgLQeIjYJITCBGEKzcckfdjJZEYhN7xs1+LniIXRZ72g9KboQva4BkYogys6J27XIsjyNhlUEJvIhhf91Qht7O6eaayFHqBKTglqMrTBG2q/5EtCxaPW8WCSHxd69P0wqi08Wm5DRkmF4zalMLS5N+v2267PWvcRjhnTY6Tbre3vyHim7fDb9n2mdfGMZq/6Lh+jJUd9J3TuA9vWvQy2o/AcLi+UbknN7Gu4oNDxF1fx/m2WUuAGESNlxaxty4QAAAAASUVORK5CYII=" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='#32768' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'Silverlight.Configurati...'" sap2010:WorkflowViewState.IdRef="ClickImage_19" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAGAAAAARCAYAAAAi5qlcAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALpSURBVFhH7ZPPaupAFMbPIzVC+iQtqZv4Fi0o3aWWC3d7W5C4t/tSEKV7pQiWLkTxCWzpn3Xhu+dMMnEyGau2gotm8SMz33zfOSdxpD9//6Fkf9Dn5ydK9gd9fHygZH+UP8Ceoff3d5TsD3p7e8POGF3i8PASI9dZiRN6fX1FwghNn0B+E6NM25JRE77k9dPl+Qoz990aNlKH+L1S/OZoqe+i/g+hl5cXKB4ueKAaar6Pi4dU2xZV4wIPrrNN+Gm+wA1qZL4P72s3yXrnvb4HPT8/QxhGPvxoiE7It4SfSh9GPGSIUP4Z6Q0KO+v0CEP9VLU7CFOP9kkvvSf+QNFQfENERj0/DJc1pF7mD9HJZosQ8bw6o2ZQPTXSO/XnsHrJ+67tkWju2VNvpjPO2Q1/Ci0WCywWAx6IDwe87oQqPBB9IOFUl72cySBf6ZLVT1VXPkzqcyHZsJOss5y5Tn5AXWMgH0D8agajtjm3gVwo9fK6h8bstWkPm2z2fD4/O38X7c/1TKD5fI75/TkqlXPcy3reRpUqOL+3deOsvUbXuUI+RXT5KBrtMf2raqhsFW2Xbu5t2tWkV7Wd7E3/pj2yM2t2V17rplfBdY16NJvN0G94longNfqY9RvwvAb67BHfbBbjhDw04jW6zhXyjGji7Rt77XGt7Roqf4LYpZt7JzInZ2Vt+rfp4Zo9PgHZPtnbeQc0nU7R8AhBPIWsFXGgCvZ6SYHetnp23ivWtrI9+fH1Xs4oQJzzxQj4Qugayh/EhTqFvdbE6/LIWvf6Zo/l7JLnH6Zn+/J1XdBkMmFzHV1+yjqhpQrWW3Ue0vxnBGjJefcLXWrpp8MbtCZoBcu9FwS5/vosp+dqWL3SXGGv6KLOF0D3Inmn7vI861XvbtbDyKicOWOLL2GWZ5yzG3oKPT09YSV3Zzg4OMPdpnpJwvUx6PjafWZBj4+PWMntKX/oU9xuqv9iro6MW05HuHJ4XNB4PEbJvhjjP5KBktgG2FZjAAAAAElFTkSuQmCC" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='silverlight.configuration.exe' cls='#32770' title='Microsoft Silverlight Configuration' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+            <ui:ImageFound DisplayName="Image Exists 'Silverlight.Configurati...'" Found="[SilverlightClear]" sap2010:WorkflowViewState.IdRef="ImageFound_3">
+              <ui:ImageFound.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAALYAAAAVCAYAAADreBREAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAM2SURBVGhD7VvtkYQgDLUq66Ebi6EXa9kOOBIIxBAQ78Pdc+LMmyUhJI/4RO/HLcEuux54La/XKxgMT4MJ2/BImLANj4QJ2/BIoLDXdQu7mPgT7NuxlrQNv4un9ndiX2Nh/7IQ920N67a39n+4AbMcedy793VH/TfsUepIw63C9m4N267Y7xbADGY5ftJe7uDyhv1KHWkowt7cEpYlwXmY3MO2Vt+6+aPtXFzngmO+tC4CNrvI4j64xQXf2KIO5iU+KR6eUJpfKG9uaMtbxEPTMXbElfyZ3yG3wjGeFiqnzl7wpp/WSSi8OHJczZPXY73zHjWiQ3/th/OVt9pDted6Xw51EHCfawzmxz2Qj/dizKnmo/33kYTNF3uXxABj2RhuIzkmXljHSfI5mndet5u8cjMMtE7GEW/01437KC4v+RSuqemUA2+mlhsAPt4LjtFecDxZh/YA4wPqzYS1Lu4prYl+LZ73SJvHurkf2As2Pst3pS9Z+If4YS8mOBGXkk9H+ynCiUrSozkkzMQj4ONTzjd4sId5sy82g576ImAeV+zUuPKQHeayTVy9kgPWNfF5rokVnGQcjdW1Sh1pM9DrtzyoJAa6yZhT8GH5+AncvEl640G+wk3zjeakD+uIXvTGEVJHPdwkbHhy+Zywz2ryvDSvxTV84KZoQv2hsDFugj+Nua+svyZsPKl95I3z0L+4Pp5eeJMx30SPCNyvjeF3Np/mG81JH9jTwpY66uNc2FCUz5F9KBjBXxkY17nxPbuXV9h48oDdi4u/rnzr5UZIAReuSfzqa5HHA8DX4Vg4deMm63Cb58m2i3uh79h9i6KOJy/2WOTp9ogg68jxlXzgEzyrDf2XJ+xEL2bGJxgLOwKOfnx95YYWG15n8be8qprNVWEDef6HhbQBh7yCPM0d5uUmi50aV+KhDvKpvpar8MvcGbwXKicZx/0zdbiN8YwnvWXosBDfnlM9Isg6yvhKPt6XhjfaNVd9w5BP6UVnrOmmBxT2t8CLnwA2zp9aaf85LnA1fC6u6OYGYcNJI08ebt8AE/YDcE033xe2wfDBMGEbHgn7Dxq7HnmZsO165GXCtuuBVwhfCXLUhrkaEyQAAAAASUVORK5CYII=" />
+              </ui:ImageFound.Image>
+              <ui:ImageFound.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="&lt;wnd app='silverlight.configuration.exe' cls='#32770' title='Microsoft Silverlight Configuration' /&gt;" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+              </ui:ImageFound.Target>
+            </ui:ImageFound>
+            <If Condition="[SilverlightClear = True]" sap2010:WorkflowViewState.IdRef="If_6">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'Silverlight.Configurati...'" sap2010:WorkflowViewState.IdRef="ClickImage_21" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+                    <ui:ClickImage.CursorPosition>
+                      <ui:CursorPosition Position="Center">
+                        <ui:CursorPosition.OffsetX>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:CursorPosition.OffsetX>
+                        <ui:CursorPosition.OffsetY>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:CursorPosition.OffsetY>
+                      </ui:CursorPosition>
+                    </ui:ClickImage.CursorPosition>
+                    <ui:ClickImage.Image>
+                      <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFgAAAAQCAYAAACSnrg1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEcSURBVFhH7ZXhDQMhCIXdyW1YxlVcxVGchMZrIciptTm5po0/vtSTJ8iLVZdzxo0d22BjtsHGbION+Y7BKaD3AVMrthqqdWdNwXWDy8adQyeA2NBJZppdZchfGCw3Xr7fmTzT7CpDKM+qfB+y3mA9V8Z8uj2GNBHPCYOnOYc+pI6uJgXPa061ZM0bsTE4RwQHGPlXaXlNJ67HI12PCOggNmo2tIbYGlxifKKI1zw13YrrvCOdROuksTLfjdheEb2mZpqWsZGOKBp5degaMzkMMDC4nF565ORYwGs6cdLwKR3oCLWP4z6Wxsp4lXvi+wJrDC5/R0Y9QDrebFbFX2sjPOfOj1ytI0h/rAGojT3V/BWDN0O2wcZsg03J+AAEM6xNtu4uwAAAAABJRU5ErkJggg==" />
+                    </ui:ClickImage.Image>
+                    <ui:ClickImage.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='silverlight.configuration.exe' cls='#32770' title='Microsoft Silverlight Configuration' /&gt;" WaitForReady="INTERACTIVE" />
+                    </ui:ClickImage.Target>
+                  </ui:ClickImage>
+                  <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'Silverlight.Configurati...'" sap2010:WorkflowViewState.IdRef="ClickImage_22" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+                    <ui:ClickImage.CursorPosition>
+                      <ui:CursorPosition Position="Center">
+                        <ui:CursorPosition.OffsetX>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:CursorPosition.OffsetX>
+                        <ui:CursorPosition.OffsetY>
+                          <InArgument x:TypeArguments="x:Int32" />
+                        </ui:CursorPosition.OffsetY>
+                      </ui:CursorPosition>
+                    </ui:ClickImage.CursorPosition>
+                    <ui:ClickImage.Image>
+                      <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFcAAAAZCAYAAABEmrJwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIxSURBVGhD7dnPb9JgHMfx518qSW/7oR5wV2My1pjg3f+ALouXcls0Jl6c1HjEozcqhBj1goIMxEog/AETCJTpAXf42G9Hax20XZuNZ4fnSd6hffoth1caDoVBrGtbAvcal4c7nU5FVxitJdzX1Q52n77DxuO3ohiRGdkF4r6qfMP28w9If7Gw0z0TxYjMyI4MV+Lef2IgXbfwaDDHbDYTxYjMyI4MV+LS473z42zlzaLoyI4MQ3EtyxIl6FK4dCyKXyTuXfMPJpOJKEFkF4k7Ho/X35uHYHIedfe8nofMZOTrvpkbXiRu2pxjNBpxqZhlyBb/Hcva56WZmxzZheN+n2M4HPKppkGWNdTok2VR9O8zBuYkQ6ud79c0ebFnR/e585wiu1DcO63fGAwG3NIVhlQqBUV393QoTIHuzlQP7OsHqNKnb19XfDOcIrtQ3NvHv9Dv9/lV2Yck7aPiP/eeWrc9FPoF7HnHvvs5RnaRuL1ej1/lc9xy0PlSBWQc5AwKK6+vr0jcW8en6Ha7/DJUG1OF4e0dOXiZI9/MYi6jGotzA6okQTUuzKw5sgvHbZ7CNE1+lXI2bg6li3veT4Kdc/0Fdn17Uq70//dwiOxCcbe/ztDpdEQJIrtI3Ha7LUpQJO5Ww0Kr1RIliOwCceld5NbHEzxo/ESz2RTFiMzILvB9Lr1F33j2HpufTrDZmIriZJuRXeA/EdTLchv3DkvO4y26fGRGdq4jrSVc0dUEAH8Bb2iYyHh7Xw0AAAAASUVORK5CYII=" />
+                    </ui:ClickImage.Image>
+                    <ui:ClickImage.Target>
+                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='silverlight.configuration.exe' cls='#32770' title='Microsoft Silverlight' /&gt;" WaitForReady="INTERACTIVE" />
+                    </ui:ClickImage.Target>
+                  </ui:ClickImage>
+                </Sequence>
+              </If.Then>
+            </If>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'Silverlight.Configurati...'" sap2010:WorkflowViewState.IdRef="ClickImage_32" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAADQAAAAOCAYAAABgmT8gAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACpSURBVEhL7ZTRDcQgCEDdiW1YhlVYhVGYhCtetLTXj0vE89L040UDmPCiUlTV7sQj9O88Qt8gBFZK6QDJOydkAGTSahlrHnk/O0q6UJWJTSsbNqko5PsCRrKfzSBZyJu/aLKJxHWCjJMrFG/ggIuicc3DNBnn90IuQ9vfuawbZ82T22L1ryEf6xJYNxRUjCBMwCTShZzz2O5j+eNJBtkeG2OK0EpuJqT2Agi98NWpICtyAAAAAElFTkSuQmCC" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='silverlight.configuration.exe' cls='#32770' title='Microsoft Silverlight Configuration' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+          </Sequence>
+        </ActivityAction>
+      </ui:WindowScope.Body>
+    </ui:WindowScope>
+    <sads:DebugSymbol.Symbol>d3BDOlxVc2Vyc1xzdmNkYXQwMlxEb2N1bWVudHNcVWlQYXRoXDFDaGVja091dENhcnJpZXJQb2ludFxDYXJyaWVyUG9pbnRfM1JhdGVMb2FkXEZyYW1ld29ya1xDbGVhciBTaWx2ZXJsaWdodC54YW1sIjsDxwEOAgEBPAU8lAECASM9BcUBFgIBAjxyPJEBAgEkPZUCPdYCAgEiQwvCARYCAQNFPUVEAgEFRj1GRAIBBEgNWR0CAR9aDWsdAgEcbA19HQIBGX4NhQEdAgEThgENrwESAgEJsAENwQEdAgEGV2dXqAECASFUO1RAAgEgaWdplgECAR5mO2ZAAgEde2d70wECARt4O3hAAgEagwFSgwG+AQIBGIMByQGDAc8BAgEXflp+bgIBFYABO4ABQAIBFIYBG4YBNgIBCogBEa0BHAIBDL8BZ78B0wECAQi8ATu8AUACAQeJAROaASMCARCbAROsASMCAQ2YAW2YAdkBAgESlQFBlQFGAgERqgFtqgHLAQIBD6cBQacBRgIBDg==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="500,91" />
+      <sap2010:ViewStateData Id="ClickImage_17" sap:VirtualizedContainerService.HintSize="464,106">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ClickImage_18" sap:VirtualizedContainerService.HintSize="464,106">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ClickImage_19" sap:VirtualizedContainerService.HintSize="464,106">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ImageFound_3" sap:VirtualizedContainerService.HintSize="464,106" />
+      <sap2010:ViewStateData Id="ClickImage_21" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="ClickImage_22" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="336,376">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="464,523">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ClickImage_32" sap:VirtualizedContainerService.HintSize="464,106" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="486,1377">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WindowScope_1" sap:VirtualizedContainerService.HintSize="500,1523" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="522,1778">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Clear_Silverlight_1" sap:VirtualizedContainerService.HintSize="562,1858" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

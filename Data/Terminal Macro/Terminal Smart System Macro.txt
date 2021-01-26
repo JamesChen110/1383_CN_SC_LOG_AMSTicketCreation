@@ -1,0 +1,38 @@
+'Open the Visual basic Editor of Terminal
+'Change to the "Login Function"
+
+'Comment it as following
+   'frmConnect.Show
+ 'Add the following code After the above statement
+   'New code as per 20th Jan 2021 by v0v00gu
+   '---------------------------------------------
+   'Get My documents path
+   Filepath = Environ$("USERPROFILE") + "\Documents\RobotData\1128_CN_MERCH_EC_JD\StoreNumber.txt"
+   
+   'Read the store number
+   Open Filepath For Input As #1
+   Line Input #1, storeNumber
+   Close #1
+   'Assign to form
+   init storeNumber, "CN"
+
+   'Read username and password
+   Filepath = Environ$("USERPROFILE") + "\Documents\RobotData\1128_CN_MERCH_EC_JD\SmartCredentials.txt"
+   Open Filepath For Input As #1
+   Line Input #1, Username
+   Line Input #1, password
+   Close #1
+   
+  'Enter username and password
+  With Session
+        .WaitForString "F4 = Simplified Chinese", "00:00:60", rcAllowKeystrokes
+        .Transmit Username & Chr(9)
+        .StatusBar = "Waiting for Prompt: Password:"
+        '.WaitForString LF & "Password: ", NEVER_TIME_OUT, rcAllowKeystrokes
+        '.WaitForString "assword", NEVER_TIME_OUT, rcAllowKeystrokes
+        .StatusBar = ""
+        .Transmit password
+        .Transmit Chr(13)
+        
+  End With
+  '---------------------------------------------

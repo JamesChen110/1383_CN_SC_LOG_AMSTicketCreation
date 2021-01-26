@@ -1,0 +1,232 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Clear_IE_Cache" mva:VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="Clear_IE_Cache_1"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Clear IE Cache" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <ui:LogMessage DisplayName="Log message" Level="Info" Message="Clearing cache..." sap2010:WorkflowViewState.IdRef="LogMessage_1" />
+    <ui:OpenBrowser UiBrowser="{x:Null}" BrowserType="IE" DisplayName="Open browser" Hidden="False" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" NewSession="True" Private="False" Url="http://wirelite.wal-mart.com/">
+      <ui:OpenBrowser.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe Walmart'" sap2010:WorkflowViewState.IdRef="ClickImage_1" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAABUAAAAZCAYAAADe1WXtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFDSURBVEhL7ZTLSgNBEEX9aY34AF8QQmCiDBjjwo3GKARElBgN/oGvKGTjShCRfEKMlJ7GmpTdExw12eXChZrq25euqeqeOm93ZdScmKYvWMZ7DcmtrTsSp2ksA9Pa5YPM5ssysxJJrdV2Ocz6/XdHYnL7F3cyvRw5LXusR2A6V6hI5/FJwGJxS6KdI9nYrrpvQEyONYAWY+sRmOZWS06suL7vfEUD+Dmqsh6B6cFnKXqKLECrv0mZ2ijK09P0em9SP2nJUnHTkZgcQIPW35+YNm9fky6XKrtuE8Akrp7J6dWzIzE5BVp/Kr6dVLtsMZ+PpXHzkmiIyVnYqYDjN9Xy7QgdHjeD8skp0LJnaPnKkTVKOZaRohQLf9CBn/tx+O01XSiUXXn/vqZZHxTW0GR6UNKoU+F3eRgzmf6WE9P0hb+zKx8zvv9kNTqangAAAABJRU5ErkJggg==" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='*' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe'" sap2010:WorkflowViewState.IdRef="ClickImage_2" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAFkAAAARCAYAAAC2AACuAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF3SURBVFhH7ZbbjcQgDEWpinrohmLohVrSAcvDHmwDCaNN2FXEx5EGjC/m8sio4zjC5lm2yQvYJi9gm7yAbLLVKigV0TZ4MeDVeBu00sH6TuxG4CS7YKYmmx13B0/MtbL+yjZ5AR2T4bc15QmJaOuhH56VhHFFJF857DfBET1jNPSNNEsRrcZgLgrLUcE4jMFcrsbH9cNYNP1Ks1u/r88ty6kMTI4JuDCXhLl59SSIdhxLF1QL+UKTadC5KEXvsyD2tsJc+H1pYlSTtic0e/Wn371DQBif5GEhJCZ2PtM7IWftaQ1CzsFNKjiDBrV545isY1ZT5ombKbjBZF5Ym3PRntYgfGVIuc6PmQxjvU1PI47n/M7k3O7t4pmGbM9qyBhZEDNI6DWx8zrGmqO8SjK6d6Kzyfx/8rlg2t16pWNfLgb6Pv1XRYl2V6MzF4XltNrlo1vi9HRxzbM6JuvP7zPm8JuAwEl+E9KQv2ebvIBt8gJeaPJ/4wg/pwk/qWG1viMAAAAASUVORK5CYII=" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='#32768' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe Internet'" sap2010:WorkflowViewState.IdRef="ClickImage_3" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAEUAAAATCAYAAADGWsDDAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF1SURBVFhH7dJPisIwFAbwd6UKvYqOm5lzVHFXvYOi+5kbVBT3FVEUEVE8QRX/dCt806oNTUickKEyA1n8aPLe90poStfrFRaPLpcLLJ79KBJ0Pp9h8eh0OsHi0fF4xEtNW3DdFqay3h9Bh8MBxiZNuESgnI8vSS4vnXGbmMh6GZ1MgWi/38PY2E8O72Oc3ycf5v0zlxGJMzI6mQJRFEUwFt4PH6pq6Zr9RS78UKMfhfDdrEZw/VCRKw7tdjsYGzVQKjUw4uo9VKmKHnsKWTaj6IvrZ7mC0Ha7hbFhHY5Tx5Crd/FGb+imPXa7mUc9nVH1xfc+yxWENpsNjA3uhx/IarKeTj+fEdcvQuv1Gsb6teTANfRZrYNKcpOVjrjOYTOKfpahCjq3vW5OY6+JVqsVjAWe8Gs78IInfcdDkNbSp6r/mG2X7zXHC9S5W72M9mPmx70mWi6XsHi0WCzwG+z2JGT5/4Dm8zksHs1mM1g8iuMYVl6MbxwTwxRFg7hYAAAAAElFTkSuQmCC" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='#32770' title='Internet Options' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+            <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe Delete'" sap2010:WorkflowViewState.IdRef="ClickImage_4" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+              <ui:ClickImage.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:ClickImage.CursorPosition>
+              <ui:ClickImage.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAEwAAAAXCAYAAACh3qkfAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFxSURBVFhH7dVPisIwFAbwd6UKOUtxM3MF1xV3dQ4x6H7mCEVxXxGLIiKKJ6jin7XwTTvakAlpeUJaHMjiR9P3vickRqTz+QyHjzqdDhw+ut1ucPjoer3C4XMH9iS6XC5w+Ny/5JPodDrB4XuNA5t/QIgPzE29F0PH4xFWzfoQRCDF+7chp8pnRB8zU6/AyTSADocDrJqG2cZCTNX37NDevpSMTp8x4WQaQGmawqr4vrG4rJav5e0TCGNGP40RiqJGEGFckqsf7fd7WDXpodXqYfKnPkSb2hjKp5aVMyV9fV2Vq1mzB5b35K0oPOr5TFlf/9yqXM1ot9vBqnEXntfF2FQz9Th9NaOvG0bb7RZWje6bGcnaAH52A/yBvlbImZJ+kSEfg9/3ilzNaLPZwKooyDam/lQ8BFFF3wsQ5bX8WdZ/zH7695oXRJW5OtF6vYbDV8uByW/dwJT/T2i1WsHho+VyCYePFosFHD5KkgQOV4Ifm96iSrimhjEAAAAASUVORK5CYII=" />
+              </ui:ClickImage.Image>
+              <ui:ClickImage.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='#32770' title='Delete Browsing History' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:ClickImage.Target>
+            </ui:ClickImage>
+          </Sequence>
+        </ActivityAction>
+      </ui:OpenBrowser.Body>
+    </ui:OpenBrowser>
+    <DoWhile DisplayName="Do while" sap2010:WorkflowViewState.IdRef="DoWhile_1">
+      <DoWhile.Variables>
+        <Variable x:TypeArguments="x:Boolean" Default="False" Name="ClearCache" />
+      </DoWhile.Variables>
+      <DoWhile.Condition>[ClearCache = False]</DoWhile.Condition>
+      <ui:ImageFound DisplayName="Image Exists 'iexplore.exe WIRELite'" Found="[ClearCache]" sap2010:WorkflowViewState.IdRef="ImageFound_1">
+        <ui:ImageFound.Image>
+          <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="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" />
+        </ui:ImageFound.Image>
+        <ui:ImageFound.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='*' /&gt;" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+        </ui:ImageFound.Target>
+      </ui:ImageFound>
+    </DoWhile>
+    <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe Internet'" sap2010:WorkflowViewState.IdRef="ClickImage_5" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+      <ui:ClickImage.CursorPosition>
+        <ui:CursorPosition Position="Center">
+          <ui:CursorPosition.OffsetX>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:CursorPosition.OffsetX>
+          <ui:CursorPosition.OffsetY>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:CursorPosition.OffsetY>
+        </ui:CursorPosition>
+      </ui:ClickImage.CursorPosition>
+      <ui:ClickImage.Image>
+        <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAAEIAAAAPCAYAAABQkhlaAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFASURBVFhH7dU9joJAHAXwd6Uh4Sp+NOs5gNjBIdxgv94AgrGX0ECIIRpPIIaPC7ydUcRdtWUqil+G/N9/inkNaNuWo5ZomoajhqjrmqOaqKqKo4q4Xq/UIfFMAuiZXnLPEo+m6TF57G4Wt3yxed7VAWVZcmixK0swXcb97Idfqgw3Zhm7soguU98w6cbPu7rgcrlwWOrR8nH7l/n+XsD+7/lpTxOcz2cOarekYSy5e8vWnGPO9S03aMDgcve6ow9OpxMHtXUohMPtW+Zzhhl9lUPQcWbExz09cDweOSyfU/XQ6GUe3QuKHqecRY4gpv7/PU1QFAWHFtrygcJm2M++ZTmgsEMWoS2LeGQhbdHN+109cDgcqENgyTK6X6cyWXVZYMkiLAb97ooTVZIV9Hd1QJ7nHOVElmUcZUSaphyl/AXbtbOwXnCoLgAAAABJRU5ErkJggg==" />
+      </ui:ClickImage.Image>
+      <ui:ClickImage.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='#32770' title='Internet Options' /&gt;" WaitForReady="INTERACTIVE" />
+      </ui:ClickImage.Target>
+    </ui:ClickImage>
+    <ui:ClickImage ContinueOnError="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click image 'iexplore.exe Walmart'" sap2010:WorkflowViewState.IdRef="ClickImage_6" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False">
+      <ui:ClickImage.CursorPosition>
+        <ui:CursorPosition Position="Center">
+          <ui:CursorPosition.OffsetX>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:CursorPosition.OffsetX>
+          <ui:CursorPosition.OffsetY>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:CursorPosition.OffsetY>
+        </ui:CursorPosition>
+      </ui:ClickImage.CursorPosition>
+      <ui:ClickImage.Image>
+        <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" TargetImageBase64="iVBORw0KGgoAAAANSUhEUgAAABYAAAARCAYAAADZsVyDAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABlSURBVDhPY/hPIzBqMBwMnMHHjx3/v33btv8/f/6EivwHs0FiIDlcgKDBIAOWL10KNxxmKEwMFyBoMLpByGxkX6ADosIY2XBiDAWBgTMY2VAQjczGZ/jARR7Nkhu5YNRgKPj/HwDI7a2wXfL8ngAAAABJRU5ErkJggg==" />
+      </ui:ClickImage.Image>
+      <ui:ClickImage.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='*' /&gt;" WaitForReady="INTERACTIVE" />
+      </ui:ClickImage.Target>
+    </ui:ClickImage>
+    <sads:DebugSymbol.Symbol>d4sBQzpcVXNlcnNca2R2YXJkYVxEb2N1bWVudHNcMUNoZWNrT3V0LVB1c2hlZFwxQ2hlY2tPdXRCYWNraGF1bFNjaGVkdWxpbmdXUk9DXEZsZWV0X0JLQUxfU2NoZWR1bGluZ18zSW5ib3VuZENvbnN1bWVyX1dST0NcQ2xlYXIgSUUgQ2FjaGUueGFtbCA7A8MBDgIBATwFPIgBAgEhPQWPARYCARKQAQWdAQ8CAQieAQWvARUCAQWwAQXBARUCAQI8QzxWAgEiPbsBPdoBAgEgQwuMARYCAROSATeSAT4CAQmUARqUAS4CARCVAQecARcCAQqtAV+tAacBAgEHqgEzqgE4AgEGvwFfvwGZAQIBBLwBM7wBOAIBA0QNVR0CAR1WDWcdAgEaaA15HQIBF3oNiwEdAgEUmgFMmgGGAQIBD5oBkQGaAZcBAgEOlQFPlQFdAgEMlwE1lwE6AgELU2dToQECAR9QO1BAAgEeZWdllgECARxiO2JAAgEbd2d3rwECARl0O3RAAgEYiQFniQG2AQIBFoYBO4YBQAIBFQ==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="464,91" />
+      <sap2010:ViewStateData Id="ClickImage_1" sap:VirtualizedContainerService.HintSize="314,106">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ClickImage_2" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="ClickImage_3" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="ClickImage_4" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="336,668">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="OpenBrowser_1" sap:VirtualizedContainerService.HintSize="464,767" />
+      <sap2010:ViewStateData Id="ImageFound_1" sap:VirtualizedContainerService.HintSize="314,106" />
+      <sap2010:ViewStateData Id="DoWhile_1" sap:VirtualizedContainerService.HintSize="464,268" />
+      <sap2010:ViewStateData Id="ClickImage_5" sap:VirtualizedContainerService.HintSize="464,106" />
+      <sap2010:ViewStateData Id="ClickImage_6" sap:VirtualizedContainerService.HintSize="464,106" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,1622">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Clear_IE_Cache_1" sap:VirtualizedContainerService.HintSize="526,1742" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
