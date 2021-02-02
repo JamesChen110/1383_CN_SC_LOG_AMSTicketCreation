@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ProcessTransaction" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uit="http://schemas.uipath.com/workflow/activities/terminal" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ProcessTransaction" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:ae="clr-namespace:Activities.EmailSmtp;assembly=Activities.EmailSmtp" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uit="http://schemas.uipath.com/workflow/activities/terminal" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
@@ -6,14 +6,17 @@
     <x:Property Name="out_strReceiptNumber" Type="OutArgument(x:String)" />
     <x:Property Name="io_conTerminalSmartSystem" Type="InOutArgument(uit:TerminalConnection)" />
     <x:Property Name="out_blnReceiptVerified" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="out_blnOrderEntry" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="in_strSmartUserName" Type="InArgument(x:String)" />
+    <x:Property Name="in_strSmartPassword" Type="InArgument(ss:SecureString)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>480,1884</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>757,3017</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="24">
+    <scg:List x:TypeArguments="x:String" Capacity="48">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -38,10 +41,14 @@
       <x:String>UiPath.Terminal</x:String>
       <x:String>UiPath.Terminal.Service</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>System.Net</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="27">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="54">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -65,13 +72,14 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>UiPath.Java.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Word</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>UiPath.Terminal.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Terminal</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Description: In this file all other process specific files will be invoked. If an application exception occurs, the current transaction can be retried. If a BRE is thrown, the transaction will be skipped. Can be a flowchart or sequence. " DisplayName="ProcessTransaction" sap:VirtualizedContainerService.HintSize="460,1824" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Description: In this file all other process specific files will be invoked. If an application exception occurs, the current transaction can be retried. If a BRE is thrown, the transaction will be skipped. Can be a flowchart or sequence. " DisplayName="ProcessTransaction" sap:VirtualizedContainerService.HintSize="1128,5741" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strLocalDataFolder" />
       <Variable x:TypeArguments="x:String" Name="strPONbr" />
@@ -79,7 +87,6 @@
       <Variable x:TypeArguments="x:String" Name="strStoreId" />
       <Variable x:TypeArguments="x:String" Name="strOrderId" />
       <Variable x:TypeArguments="x:String" Name="strPartitionId" />
-      <Variable x:TypeArguments="uit:TerminalConnection" Name="terminalSmartSystem" />
       <Variable x:TypeArguments="x:Boolean" Name="blnOrderVerified" />
       <Variable x:TypeArguments="x:Double" Name="dblProductCost" />
       <Variable x:TypeArguments="x:Int32" Name="intQty" />
@@ -91,6 +98,9 @@
       <Variable x:TypeArguments="x:Int32" Name="intResultCode" />
       <Variable x:TypeArguments="x:String" Name="strResultMsg" />
       <Variable x:TypeArguments="x:String" Name="strAPIRequest" />
+      <Variable x:TypeArguments="x:String" Name="strSmartSystemSettingsFilePath" />
+      <Variable x:TypeArguments="x:String" Name="strSmartSystemCredsFilePath" />
+      <Variable x:TypeArguments="x:String" Name="strAPI_UpdateEndPoint" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -98,14 +108,14 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialization" sap:VirtualizedContainerService.HintSize="418,66" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Initialization" sap:VirtualizedContainerService.HintSize="1086,1392" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_1">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[strLocalDataFolder]</OutArgument>
         </Assign.To>
@@ -113,7 +123,23 @@
           <InArgument x:TypeArguments="x:String">[Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\RobotData\" + in_Config("ProjectName").ToString]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_10">
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_24">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[strSmartSystemSettingsFilePath]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[Path.Combine(strLocalDataFolder,"smart.r2w")]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_25">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[strSmartSystemCredsFilePath]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[Path.Combine(strLocalDataFolder,"SmartCredentials.txt")]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_10">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[strLocalLogFileFullPath]</OutArgument>
         </Assign.To>
@@ -121,7 +147,7 @@
           <InArgument x:TypeArguments="x:String">[Path.Combine(strLocalDataFolder ,"Log.csv")]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_4">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[strStoreId]</OutArgument>
         </Assign.To>
@@ -129,7 +155,7 @@
           <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("storeId").ToString]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_5">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[strPartitionId]</OutArgument>
         </Assign.To>
@@ -137,7 +163,7 @@
           <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("partitionId").ToString]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_6">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[strOrderId]</OutArgument>
         </Assign.To>
@@ -145,7 +171,7 @@
           <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("orderId").ToString]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_3">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[strUPC]</OutArgument>
         </Assign.To>
@@ -153,10 +179,10 @@
           <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("upc").ToString]</InArgument>
         </Assign.Value>
       </Assign>
-      <If Condition="[in_TransactionItem.SpecificContent.ContainsKey(&quot;poNbr&quot;) = True]" DisplayName="If- Find Order/Claim" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_1">
+      <If Condition="[in_TransactionItem.SpecificContent.ContainsKey(&quot;poNbr&quot;) = True]" DisplayName="If- Find Order/Claim" sap:VirtualizedContainerService.HintSize="653,400" sap2010:WorkflowViewState.IdRef="If_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
@@ -211,61 +237,144 @@
           </Sequence>
         </If.Else>
       </If>
+      <Assign sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_22">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Boolean">[out_blnOrderEntry]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Boolean">[blnOrderEntry]</InArgument>
+        </Assign.Value>
+      </Assign>
     </Sequence>
-    <Sequence DisplayName="Open Smart System" sap:VirtualizedContainerService.HintSize="418,66" sap2010:WorkflowViewState.IdRef="Sequence_7">
+    <Sequence DisplayName="Open Smart System" sap:VirtualizedContainerService.HintSize="1086,849" sap2010:WorkflowViewState.IdRef="Sequence_7">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OpenSmartSystem workflow" sap:VirtualizedContainerService.HintSize="357,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Components\SmartSystem\OpenSmartSystem.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_strStoreNumber">[strStoreId]</InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="in_strStoreNumberFilePath">[Path.Combine(strlocalDataFolder,in_Config("StoreNumberFileName").ToString)]</InArgument>
-          <OutArgument x:TypeArguments="uit:TerminalConnection" x:Key="out_TerminalSmartSystem">[io_conTerminalSmartSystem]</OutArgument>
-          <InArgument x:TypeArguments="x:Int32" x:Key="in_intTimeoutSeconds">[Convert.ToInt32(in_Config("SmartSystem_Timeout_InSeconds").ToString)]</InArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-    </Sequence>
-    <Sequence DisplayName="Order Entry" sap:VirtualizedContainerService.HintSize="418,66" sap2010:WorkflowViewState.IdRef="Sequence_8">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[blnOrderEntry]" sap:VirtualizedContainerService.HintSize="542,458" sap2010:WorkflowViewState.IdRef="If_2">
+      <If Condition="[io_strCurrentStoreNumber = &quot;&quot; or io_strCurrentStoreNumber &lt;&gt; strStoreId]" sap:VirtualizedContainerService.HintSize="621,757" sap2010:WorkflowViewState.IdRef="If_6">
         <If.Then>
-          <Sequence sap:VirtualizedContainerService.HintSize="397,310" sap2010:WorkflowViewState.IdRef="Sequence_9">
+          <Sequence sap:VirtualizedContainerService.HintSize="476,609" sap2010:WorkflowViewState.IdRef="Sequence_16">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OrderFinalizeEntry workflow" sap:VirtualizedContainerService.HintSize="355,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Components\SmartSystem\OrderFinalizeEntry.xaml">
-              <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="uit:TerminalConnection" x:Key="in_terminalSmartSystem">[terminalSmartSystem]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_strPONumber">[strPONbr]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_strLocalCSVLogFile">[strLocalLogFileFullPath]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_strUPCNumber">[strUPC]</InArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_strReceiptNumber">[out_strReceiptNumber]</OutArgument>
-                <OutArgument x:TypeArguments="x:Boolean" x:Key="out_blnOrderVerified">[blnOrderVerified]</OutArgument>
-              </ui:InvokeWorkflowFile.Arguments>
-            </ui:InvokeWorkflowFile>
-            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="355,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Receipt Number:&quot; + out_strReceiptNumber + &quot; Verified:&quot; + blnOrderVerified.ToString]" />
+            <ui:WriteTextFile DisplayName="Write Smart Credentails into Text File" FileName="[strSmartSystemCredsFilePath]" sap:VirtualizedContainerService.HintSize="434,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[in_strSmartUserName + Environment.NewLine + New Net.NetworkCredential(&quot;&quot;,in_strSmartPassword,&quot;&quot;).Password]" />
+            <TryCatch DisplayName="Try Catch- Open Smarty System" sap:VirtualizedContainerService.HintSize="434,183" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <TryCatch.Try>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OpenSmartSystem workflow" sap:VirtualizedContainerService.HintSize="357,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Components\SmartSystem\OpenSmartSystem.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_strStoreNumber">[strStoreId]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_strStoreNumberFilePath">[Path.Combine(strlocalDataFolder,in_Config("StoreNumberFileName").ToString)]</InArgument>
+                    <OutArgument x:TypeArguments="uit:TerminalConnection" x:Key="out_TerminalSmartSystem">[io_conTerminalSmartSystem]</OutArgument>
+                    <InArgument x:TypeArguments="x:Int32" x:Key="in_intTimeoutSeconds">[Convert.ToInt32(in_Config("SmartSystem_Timeout_InSeconds").ToString)]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_strSmartSystemSettingsFilePath">[strSmartSystemSettingsFilePath]</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+              </TryCatch.Try>
+              <TryCatch.Catches>
+                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ActivityAction x:TypeArguments="s:Exception">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                    </ActivityAction.Argument>
+                    <Sequence sap:VirtualizedContainerService.HintSize="242,176" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:Delete ContinueOnError="True" DisplayName="Delete Smart Credential File" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[strSmartSystemCredsFilePath]" />
+                      <Rethrow sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
+                    </Sequence>
+                  </ActivityAction>
+                </Catch>
+              </TryCatch.Catches>
+            </TryCatch>
+            <Assign DisplayName="Change the current store id" sap:VirtualizedContainerService.HintSize="434,60" sap2010:WorkflowViewState.IdRef="Assign_23">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[io_strCurrentStoreNumber]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[strStoreId]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:Delete ContinueOnError="{x:Null}" DisplayName="Delete Smart Credential File" sap:VirtualizedContainerService.HintSize="434,22" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[strSmartSystemCredsFilePath]" />
           </Sequence>
         </If.Then>
       </If>
     </Sequence>
-    <Sequence DisplayName="Claim Entry" sap:VirtualizedContainerService.HintSize="418,66" sap2010:WorkflowViewState.IdRef="Sequence_10">
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="1086,236" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="242,158" sap2010:WorkflowViewState.IdRef="Sequence_19">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence DisplayName="Order Entry" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_8">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If Condition="[blnOrderEntry]" sap:VirtualizedContainerService.HintSize="542,458" sap2010:WorkflowViewState.IdRef="If_2">
+              <If.Then>
+                <Sequence sap:VirtualizedContainerService.HintSize="397,310" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OrderFinalizeEntry workflow" sap:VirtualizedContainerService.HintSize="355,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Components\SmartSystem\OrderFinalizeEntry.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="uit:TerminalConnection" x:Key="in_terminalSmartSystem">[io_conTerminalSmartSystem]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_strPONumber">[strPONbr]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_strLocalCSVLogFile">[strLocalLogFileFullPath]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_strUPCNumber">[strUPC]</InArgument>
+                      <OutArgument x:TypeArguments="x:String" x:Key="out_strReceiptNumber">[out_strReceiptNumber]</OutArgument>
+                      <OutArgument x:TypeArguments="x:Boolean" x:Key="out_blnOrderVerified">[blnOrderVerified]</OutArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="355,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Receipt Number:&quot; + out_strReceiptNumber + &quot; Verified:&quot; + blnOrderVerified.ToString]" />
+                </Sequence>
+              </If.Then>
+            </If>
+          </Sequence>
+        </Sequence>
+      </ui:CommentOut.Body>
+    </ui:CommentOut>
+    <Assign sap:VirtualizedContainerService.HintSize="1086,60" sap2010:WorkflowViewState.IdRef="Assign_33">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[out_strReceiptNumber]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">01-02020026</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Sequence DisplayName="Claim Entry" sap:VirtualizedContainerService.HintSize="1086,66" sap2010:WorkflowViewState.IdRef="Sequence_10">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[blnClaimEntry = True]" sap:VirtualizedContainerService.HintSize="521,478" sap2010:WorkflowViewState.IdRef="If_3">
+      <If Condition="[blnClaimEntry = True]" sap:VirtualizedContainerService.HintSize="521,458" sap2010:WorkflowViewState.IdRef="If_3">
         <If.Then>
           <Sequence sap:VirtualizedContainerService.HintSize="376,310" sap2010:WorkflowViewState.IdRef="Sequence_11">
             <sap:WorkflowViewStateService.ViewState>
@@ -275,7 +384,7 @@
             </sap:WorkflowViewStateService.ViewState>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ClaimEntry workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Components\SmartSystem\ClaimEntry.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="uit:TerminalConnection" x:Key="in_terminalSmartSystem">[terminalSmartSystem]</InArgument>
+                <InArgument x:TypeArguments="uit:TerminalConnection" x:Key="in_terminalSmartSystem">[io_conTerminalSmartSystem]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_strLocalCSVLogFile">[strLocalLogFileFullPath]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_strUPCNumber">[strUPC]</InArgument>
                 <InArgument x:TypeArguments="x:Int32" x:Key="in_SmartSystemTimeoutInSeconds">[Convert.ToInt32(in_Config("SmartSystem_Timeout_InSeconds").ToString)]</InArgument>
@@ -290,33 +399,85 @@
         </If.Then>
       </If>
     </Sequence>
-    <Sequence DisplayName="Update into API" sap:VirtualizedContainerService.HintSize="418,1251" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="Update into API" sap:VirtualizedContainerService.HintSize="1086,2804" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="PrepareHeaderURL" sap:VirtualizedContainerService.HintSize="376,643" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence DisplayName="PrepareHeaderURL" sap:VirtualizedContainerService.HintSize="1044,1832" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <If Condition="[blnOrderEntry]" DisplayName="If - Get Header Text and replace Values" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_4">
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_26">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[strAPI_UpdateEndPoint]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_Config("API_QA_EndPoint").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <If Condition="[blnOrderEntry]" DisplayName="If - Get Header Text and replace Values" sap:VirtualizedContainerService.HintSize="1002,1040" sap2010:WorkflowViewState.IdRef="If_4">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <If.Then>
-            <Sequence sap:VirtualizedContainerService.HintSize="304,352" sap2010:WorkflowViewState.IdRef="Sequence_12">
+            <Sequence sap:VirtualizedContainerService.HintSize="304,543" sap2010:WorkflowViewState.IdRef="Sequence_12">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
+              <If Condition="[out_strReceiptNumber &lt;&gt; &quot;&quot;]" DisplayName="If - Result Code Settings" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_7">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Sequence sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_30">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[intResultCode]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">1</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_32">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[strResultMsg]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">success</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_31">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[intResultCode]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">2</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </If.Else>
+              </If>
               <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_11">
                 <Assign.To>
                   <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
@@ -325,37 +486,12 @@
                   <InArgument x:TypeArguments="x:String">[in_Config("API_OrderUpdate_RequestFormat").ToString]</InArgument>
                 </Assign.Value>
               </Assign>
-              <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_13">
+              <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_27">
                 <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String">[strAPI_UpdateEndPoint]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;afsId&gt;",strAfsId)]</InArgument>
-                </Assign.Value>
-              </Assign>
-              <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_14">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;compensationId&gt;",out_strReceiptNumber)]</InArgument>
-                </Assign.Value>
-              </Assign>
-            </Sequence>
-          </If.Then>
-          <If.Else>
-            <Sequence sap:VirtualizedContainerService.HintSize="304,352" sap2010:WorkflowViewState.IdRef="Sequence_13">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_12">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">[in_Config("API_ClaimUpdate_RequestFormat").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String">[strAPI_UpdateEndPoint + in_Config("API_OrderUpdate").ToString]</InArgument>
                 </Assign.Value>
               </Assign>
               <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_15">
@@ -375,9 +511,87 @@
                 </Assign.Value>
               </Assign>
             </Sequence>
+          </If.Then>
+          <If.Else>
+            <Sequence sap:VirtualizedContainerService.HintSize="653,892" sap2010:WorkflowViewState.IdRef="Sequence_13">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If Condition="[out_strReceiptNumber &lt;&gt; &quot;&quot;]" DisplayName="If - Result Code Settings" sap:VirtualizedContainerService.HintSize="611,400" sap2010:WorkflowViewState.IdRef="If_8">
+                <If.Then>
+                  <Sequence sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_34">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[intResultCode]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">1</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_35">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[strResultMsg]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">success</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_36">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[intResultCode]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">2</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </If.Else>
+              </If>
+              <Assign sap:VirtualizedContainerService.HintSize="611,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[in_Config("API_ClaimUpdate_RequestFormat").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap:VirtualizedContainerService.HintSize="611,60" sap2010:WorkflowViewState.IdRef="Assign_28">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[strAPI_UpdateEndPoint]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[strAPI_UpdateEndPoint + in_Config("API_ClaimUpdate").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap:VirtualizedContainerService.HintSize="611,60" sap2010:WorkflowViewState.IdRef="Assign_13">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;afsId&gt;",strAfsId)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap:VirtualizedContainerService.HintSize="611,60" sap2010:WorkflowViewState.IdRef="Assign_14">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;compensationId&gt;",out_strReceiptNumber)]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
           </If.Else>
         </If>
-        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_17">
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_17">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
           </Assign.To>
@@ -385,15 +599,23 @@
             <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;orderId&gt;",strOrderId)]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_18">
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_29">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("appName",in_Config("API_AppName").ToString)]</InArgument>
+            <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;version&gt;",in_Config("API_Version").ToString)]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_19">
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_18">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;appName&gt;",in_Config("API_AppName").ToString)]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_19">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
           </Assign.To>
@@ -401,7 +623,7 @@
             <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;timestamp&gt;",DateTime.Now.ToString)]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_20">
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_20">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
           </Assign.To>
@@ -409,7 +631,7 @@
             <InArgument x:TypeArguments="x:String">[strAPIRequest.Replace("&lt;resultCode&gt;",intResultCode.ToString)]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_21">
+        <Assign sap:VirtualizedContainerService.HintSize="1002,60" sap2010:WorkflowViewState.IdRef="Assign_21">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[strAPIRequest]</OutArgument>
           </Assign.To>
@@ -418,7 +640,7 @@
           </Assign.Value>
         </Assign>
       </Sequence>
-      <Sequence DisplayName="API Update" sap:VirtualizedContainerService.HintSize="376,476" sap2010:WorkflowViewState.IdRef="Sequence_14">
+      <Sequence DisplayName="API Update" sap:VirtualizedContainerService.HintSize="1044,840" sap2010:WorkflowViewState.IdRef="Sequence_14">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:String" Name="strAPIResponse" />
           <Variable x:TypeArguments="x:Int32" Name="intAPIResponseCode" />
@@ -429,7 +651,7 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[strAPIRequest]" BodyFormat="application/xml" DisplayName="HTTP Request" EndPoint="[in_Config(&quot;1128_API_QA_EndPoint&quot;).ToString]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="HttpClient_2" Method="POST" Result="[strAPIResponse]" StatusCode="[intAPIResponseCode]" TimeoutMS="6000">
+        <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[strAPIRequest]" BodyFormat="application/xml" DisplayName="HTTP Request" EndPoint="[in_Config(&quot;API_QA_EndPoint&quot;).ToString]" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="HttpClient_2" Method="POST" Result="[strAPIResponse]" StatusCode="[intAPIResponseCode]" TimeoutMS="[Convert.ToInt32(in_Config(&quot;API_UpdateTimeOut_InSeconds&quot;).ToString) * 1000]">
           <ui:HttpClient.Attachments>
             <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
           </ui:HttpClient.Attachments>
@@ -443,9 +665,28 @@
             <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
           </ui:HttpClient.UrlSegments>
         </ui:HttpClient>
-        <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[jsonAPIResponse]" JsonString="[strAPIResponse]" />
-        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Result Code:&quot; + jsonAPIResponse(&quot;code&quot;).ToString]" />
-        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Result Message&quot; + jsonAPIResponse(&quot;message&quot;).ToString]" />
+        <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[jsonAPIResponse]" JsonString="[strAPIResponse]" />
+        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="521,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;API Update Result Code:&quot; + jsonAPIResponse(&quot;code&quot;).ToString]" />
+        <If Condition="[jsonAPIResponse(&quot;code&quot;).ToString &lt;&gt; &quot;0&quot;]" DisplayName="If-Check Error , if error then throw" sap:VirtualizedContainerService.HintSize="521,455" sap2010:WorkflowViewState.IdRef="If_5">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <Sequence sap:VirtualizedContainerService.HintSize="376,307" sap2010:WorkflowViewState.IdRef="Sequence_15">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;API Error - API Result Message&quot; + jsonAPIResponse(&quot;message&quot;).ToString]" />
+              <ae:EmailSmtp PathFile="{x:Null}" Result="{x:Null}" Body="[&quot;Order ID:&quot; + strOrderId  + &quot; API returned error while updating the status,API Code:&quot; +  jsonAPIResponse(&quot;code&quot;).ToString +&quot;  API Message:&quot; +   jsonAPIResponse(&quot;message&quot;).ToString]" Cc="[in_Config(&quot;SystemException_MailCopyTo&quot;).ToString]" DisplayName="Email smtp" From="[Environment.UserName &amp; &quot;@wal-mart.com&quot;]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="EmailSmtp_1" Subject="[&quot;API Update Error - &quot; + strOrderId]" To="[in_Config(&quot;SystemException_MailReceiver&quot;).ToString]" />
+              <Throw Exception="[new Exception(&quot;API returned error while updating the status,API Code:&quot; +  jsonAPIResponse(&quot;code&quot;).ToString +&quot;  API Message:&quot; +   jsonAPIResponse(&quot;message&quot;).ToString)]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+            </Sequence>
+          </If.Then>
+        </If>
       </Sequence>
     </Sequence>
   </Sequence>

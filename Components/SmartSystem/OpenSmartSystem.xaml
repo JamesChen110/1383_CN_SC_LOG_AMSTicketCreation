@@ -4,11 +4,12 @@
     <x:Property Name="in_strStoreNumberFilePath" Type="InArgument(x:String)" />
     <x:Property Name="out_TerminalSmartSystem" Type="OutArgument(uit:TerminalConnection)" />
     <x:Property Name="in_intTimeoutSeconds" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_strSmartSystemSettingsFilePath" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>496,1007</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>496,1067</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>OpenSmartSystem_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -64,9 +65,10 @@
       <AssemblyReference>UiPath.Word</AssemblyReference>
       <AssemblyReference>UiPath.Java.Activities</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="OpenSmartSystem" sap:VirtualizedContainerService.HintSize="476,907" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="OpenSmartSystem" sap:VirtualizedContainerService.HintSize="476,1007" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strTerminalConnString" />
     </Sequence.Variables>
@@ -93,7 +95,15 @@
     </Sequence>
     <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill - SMART System" sap:VirtualizedContainerService.HintSize="434,22" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="r2win" />
     <ui:WriteTextFile DisplayName="Write Store Number into Text File" FileName="[in_strStoreNumberFilePath]" sap:VirtualizedContainerService.HintSize="434,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[in_strStoreNumber]" />
-    <uit:TerminalSession ContinueOnError="{x:Null}" ExistingConnection="{x:Null}" CloseConnection="False" ConnectionString="{}{'AttachExisting':false,'ConnectionType':0,'EhllBasicMode':false,'EhllDll':null,'EhllEnhanced':true,'EhllFunction':'hllapi','EhllSession':'A','Host':null,'Mode':1,'Port':23,'Profile':'C:\\Users\\v0v00gu\\Documents\\RobotData\\1128_CN_MERCH_EC_JD\\Smart.r2w','ProviderType':7,'ShowTerminal':true,'TerminalType':0}" DelayMS="1000" DisplayName="Terminal Session - Open Smart System" sap:VirtualizedContainerService.HintSize="434,475" sap2010:WorkflowViewState.IdRef="TerminalSession_4" OutputConnection="[out_TerminalSmartSystem]" TimeoutMS="50000">
+    <Assign DisplayName="Add one more \" sap:VirtualizedContainerService.HintSize="434,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[in_strSmartSystemSettingsFilePath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_strSmartSystemSettingsFilePath.Replace("\","\\")]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <uit:TerminalSession ContinueOnError="{x:Null}" ExistingConnection="{x:Null}" CloseConnection="False" ConnectionString="[&quot;{'AttachExisting':false,'ConnectionType':0,'EhllBasicMode':false,'EhllDll':null,'EhllEnhanced':true,'EhllFunction':'hllapi','EhllSession':'A','Host':null,'Mode':1,'Port':23,'Profile':'&quot; + in_strSmartSystemSettingsFilePath + &quot;','ProviderType':7,'ShowTerminal':true,'TerminalType':0}&quot;]" DelayMS="1000" DisplayName="Terminal Session - Open Smart System" sap:VirtualizedContainerService.HintSize="434,475" sap2010:WorkflowViewState.IdRef="TerminalSession_4" OutputConnection="[out_TerminalSmartSystem]" TimeoutMS="50000">
       <uit:TerminalSession.Body>
         <ActivityAction x:TypeArguments="uit:TerminalConnection">
           <ActivityAction.Argument>
