@@ -6,11 +6,15 @@
     <x:Property Name="in_strUPCNumber" Type="InArgument(x:String)" />
     <x:Property Name="out_strReceiptNumber" Type="OutArgument(x:String)" />
     <x:Property Name="out_blnOrderVerified" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="out_strOrderErrorMsg" Type="OutArgument(x:String)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_intOrderQty" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_strPartitionID" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>988,3087</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1941,12016</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>OrderFinalizeEntry_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -67,47 +71,84 @@
       <AssemblyReference>UiPath.Word</AssemblyReference>
       <AssemblyReference>UiPath.Java.Activities</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.CV</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="OrderFinalizeEntry" sap:VirtualizedContainerService.HintSize="968,2987" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="OrderFinalizeEntry" sap:VirtualizedContainerService.HintSize="1921,11956" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strScreenText" />
       <Variable x:TypeArguments="x:Boolean" Name="blnError" />
       <Variable x:TypeArguments="x:String" Name="strReceiptNumber" />
       <Variable x:TypeArguments="x:Int32" Name="intIndex" />
       <Variable x:TypeArguments="s:String[]" Name="strArrScreenText" />
+      <Variable x:TypeArguments="x:Boolean" Name="blnNOFError" />
+      <Variable x:TypeArguments="x:String" Name="strDepartmentNo" />
+      <Variable x:TypeArguments="x:String" Name="strStatus" />
+      <Variable x:TypeArguments="x:String" Name="strVendorName" />
+      <Variable x:TypeArguments="x:Boolean" Name="blnNeedToFinalize" />
+      <Variable x:TypeArguments="x:Boolean" Name="blnVendorSelection" />
+      <Variable x:TypeArguments="x:Boolean" Name="blnAlreadyHaveReceiptNumber" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <uit:TerminalSession ConnectionString="{x:Null}" ContinueOnError="{x:Null}" OutputConnection="{x:Null}" CloseConnection="False" DelayMS="1000" DisplayName="Terminal Session" ExistingConnection="[in_terminalSmartSystem]" sap:VirtualizedContainerService.HintSize="926,2895" sap2010:WorkflowViewState.IdRef="TerminalSession_1" TimeoutMS="50000">
+    <Sequence DisplayName="Initialization" sap:VirtualizedContainerService.HintSize="1879,252" sap2010:WorkflowViewState.IdRef="Sequence_41">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_26">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">
+            <Literal x:TypeArguments="x:String" Value="" />
+          </InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_27">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_strReceiptNumber]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">
+            <Literal x:TypeArguments="x:String" Value="" />
+          </InArgument>
+        </Assign.Value>
+      </Assign>
+    </Sequence>
+    <uit:TerminalSession ConnectionString="{x:Null}" ContinueOnError="{x:Null}" OutputConnection="{x:Null}" CloseConnection="False" DelayMS="1000" DisplayName="Terminal Session" ExistingConnection="[in_terminalSmartSystem]" sap:VirtualizedContainerService.HintSize="1879,11572" sap2010:WorkflowViewState.IdRef="TerminalSession_1" TimeoutMS="50000">
       <uit:TerminalSession.Body>
         <ActivityAction x:TypeArguments="uit:TerminalConnection">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="uit:TerminalConnection" Name="terminalSession" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="892,2796" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="1845,11473" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Validation &amp; Bring to PO Screen" sap:VirtualizedContainerService.HintSize="850,1012" sap2010:WorkflowViewState.IdRef="Sequence_18">
+            <Sequence DisplayName="Validation &amp; Bring to PO Screen" sap:VirtualizedContainerService.HintSize="1803,66" sap2010:WorkflowViewState.IdRef="Sequence_18">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_2" Text="[strScreenText]" TimeoutMS="5000" WaitType="COMPLETE" />
-              <If Condition="[strScreenText.Contains(&quot;MAIN---------&quot;) = True]" DisplayName="If - Choose - 手提终端" sap:VirtualizedContainerService.HintSize="521,51" sap2010:WorkflowViewState.IdRef="If_1">
+              <If Condition="[strScreenText.Contains(&quot;MAIN---------&quot;) = True]" DisplayName="If - Choose - 手提终端" sap:VirtualizedContainerService.HintSize="521,500" sap2010:WorkflowViewState.IdRef="If_1">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
@@ -145,10 +186,10 @@
                 </If.Then>
               </If>
               <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_3" Text="[strScreenText]" TimeoutMS="5000" WaitType="COMPLETE" />
-              <If Condition="[strScreenText.Contains(&quot;后仓作业------------&quot;) = True]" DisplayName="If - Choose 后仓作业" sap:VirtualizedContainerService.HintSize="521,399" sap2010:WorkflowViewState.IdRef="If_2">
+              <If Condition="[strScreenText.Contains(&quot;后仓作业------------&quot;) = True]" DisplayName="If - Choose 后仓作业" sap:VirtualizedContainerService.HintSize="521,51" sap2010:WorkflowViewState.IdRef="If_2">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
@@ -165,8 +206,8 @@
                   </Sequence>
                 </If.Then>
               </If>
-              <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_4" Text="[strScreenText]" TimeoutMS="5000" WaitType="COMPLETE" />
-              <If Condition="[Not (strScreenText.Contains(&quot;登录商品&quot;) = True And strScreenText.Contains(&quot;收货日期&quot;) = True)]" DisplayName="Validateion whether its in the Order Entry Screen - If" sap:VirtualizedContainerService.HintSize="521,51" sap2010:WorkflowViewState.IdRef="If_3">
+              <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_4" Text="[strScreenText]" TimeoutMS="5000" WaitType="COMPLETE" />
+              <If Condition="[Not (strScreenText.Contains(&quot;登录商品&quot;) = True And strScreenText.Contains(&quot;收货日期&quot;) = True)]" DisplayName="Validateion whether its in the Order Entry Screen - If" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_3">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -185,39 +226,135 @@
                 </If.Then>
               </If>
             </Sequence>
-            <Sequence DisplayName="Input PO Number" sap:VirtualizedContainerService.HintSize="850,66" sap2010:WorkflowViewState.IdRef="Sequence_19">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (01)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_1" Keys="01" TimeoutMS="5000" WaitType="READY" />
-              <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (PO Number)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_2" Keys="[in_strPONumber]" TimeoutMS="5000" WaitType="READY" />
-              <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
-              <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_5" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
-              <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_2" />
-            </Sequence>
-            <Sequence DisplayName="Validate the result,whether success or not" sap:VirtualizedContainerService.HintSize="850,305" sap2010:WorkflowViewState.IdRef="Sequence_20">
+            <Sequence DisplayName="Input PO Number" sap:VirtualizedContainerService.HintSize="1803,413" sap2010:WorkflowViewState.IdRef="Sequence_19">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_1" Text="[strScreenText]" TimeoutMS="5000" WaitType="COMPLETE" />
-              <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:Boolean">[blnError]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:Boolean">True</InArgument>
-                </Assign.Value>
-              </Assign>
-              <If Condition="[strScreenText.Contains(&quot;运货人:&quot;) = True]" DisplayName="If - If Any error handle the error" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_4">
+              <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (Partition ID)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_1" Keys="[in_strPartitionID]" TimeoutMS="5000" WaitType="READY" />
+              <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (PO Number)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_2" Keys="[in_strPONumber]" TimeoutMS="5000" WaitType="READY" />
+              <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_5" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+              <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_2" />
+            </Sequence>
+            <Sequence DisplayName="Validate the result,whether success or not" sap:VirtualizedContainerService.HintSize="1803,3471" sap2010:WorkflowViewState.IdRef="Sequence_20">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="708,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_1" Text="[strScreenText]" TimeoutMS="5000" WaitType="COMPLETE" />
+              <If Condition="[strScreenText.Contains(&quot;目前有一个&quot;) = True  or (strScreenText.Contains(&quot;目前有&quot;) = True AND strScreenText.Contains(&quot;将会收到&quot;) = True) and strScreenText.Contains(&quot;收据号&quot;) = True]" DisplayName="If its already exist" sap:VirtualizedContainerService.HintSize="708,2599" sap2010:WorkflowViewState.IdRef="If_17">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Sequence sap:VirtualizedContainerService.HintSize="563,2452" sap2010:WorkflowViewState.IdRef="Sequence_39">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="Assign_22">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[strScreenText]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[strScreenText.Substring(strScreenText.IndexOf("收据号"))]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="Assign_23">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[strScreenText]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[strScreenText.Substring(0,strScreenText.IndexOf(Environment.NewLine))]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="Assign_24">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[strReceiptNumber]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[strScreenText.Replace("收据号","").Trim]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="521,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Receipt Number already exist:&quot; + strReceiptNumber]" />
+                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (2)&quot;" sap:VirtualizedContainerService.HintSize="521,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_13" Keys="N" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="521,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_32" Key="F2" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="521,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_31" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetInventoryStatus workflow" sap:VirtualizedContainerService.HintSize="521,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Components\SmartSystem\GetInventoryStatus.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_strReceiptNumber">[strReceiptNumber]</InArgument>
+                        <OutArgument x:TypeArguments="x:String" x:Key="out_strStatus">[strStatus]</OutArgument>
+                        <OutArgument x:TypeArguments="x:String" x:Key="out_strDepartmentNumber">[strDepartmentNo]</OutArgument>
+                        <OutArgument x:TypeArguments="x:String" x:Key="out_strVendorName">[strVendorName]</OutArgument>
+                        <InArgument x:TypeArguments="uit:TerminalConnection" x:Key="in_SmartTerminalConnection">[in_terminalSmartSystem]</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                    <If Condition="[strStatus = &quot;起始&quot;]" DisplayName="Check is already Finalized- If" sap:VirtualizedContainerService.HintSize="521,1501" sap2010:WorkflowViewState.IdRef="If_18">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="376,1354" sap2010:WorkflowViewState.IdRef="Sequence_40">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_36">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[out_strReceiptNumber]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[strReceiptNumber]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_33" Key="Down" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_34" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_35" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_36" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (Partition ID)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_14" Keys="[in_strPartitionID]" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (PO Number)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_15" Keys="[in_strPONumber]" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_37" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_11" Text="目前有" TimeoutMS="30000" WaitType="READY" />
+                          <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (2)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_16" Keys="N" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_40" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_35">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Boolean">[blnAlreadyHaveReceiptNumber]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_25">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Boolean">[blnNeedToFinalize]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </If.Then>
+                    </If>
+                  </Sequence>
+                </If.Then>
+              </If>
+              <If Condition="[strScreenText.Contains(&quot;运货人:&quot;) = True or blnNeedToFinalize = True]" DisplayName="If - If Any error handle the error" sap:VirtualizedContainerService.HintSize="708,678" sap2010:WorkflowViewState.IdRef="If_4">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
@@ -231,9 +368,123 @@
                     </Assign.Value>
                   </Assign>
                 </If.Then>
+                <If.Else>
+                  <Sequence DisplayName="Check Business Exception " sap:VirtualizedContainerService.HintSize="304,531" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Boolean">[blnError]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <If Condition="[strScreenText.Contains(&quot;订单号未找到&quot;) = True]" DisplayName="If - BE-Order-1" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_8">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="376,354" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_19" Key="F12" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_22" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_9">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[in_Config("BE-Order-1").ToString]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </If.Then>
+                    </If>
+                    <If Condition="[strScreenText.Contains(&quot;目前有一个&quot;) = True  or (strScreenText.Contains(&quot;目前有&quot;) = True AND strScreenText.Contains(&quot;将会收到&quot;) = True)]" DisplayName="If-BE-Order-2" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_9">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="376,453" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys N&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_10" Keys="N" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_20" Key="F2" TimeoutMS="5000" WaitType="READY" />
+                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_21" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_11">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[in_Config("BE-Order-2").ToString]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </If.Then>
+                    </If>
+                    <If Condition="[out_strOrderErrorMsg = &quot;&quot;]" DisplayName="If - Unknown Error" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_10">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="304,214" sap2010:WorkflowViewState.IdRef="Sequence_32">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign DisplayName="Mark as Unkown Error" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_20">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">["Unknown Exceptions: Smart Screen data:" + strScreenText]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill - SMART System" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="r2win" />
+                        </Sequence>
+                      </If.Then>
+                    </If>
+                    <Sequence DisplayName="Log Details" sap:VirtualizedContainerService.HintSize="262,66" sap2010:WorkflowViewState.IdRef="Sequence_34">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Update into CSV File" sap:VirtualizedContainerService.HintSize="346,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Components\Common\CSV_Append_Status.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_CSVFilePath">[in_strLocalCSVLogFile]</InArgument>
+                          <InArgument x:TypeArguments="s:Object[]" x:Key="in_ArrayItems">[{"Order Finalize",in_strPONumber,strScreenText}]</InArgument>
+                          <InArgument x:TypeArguments="s:String[]" x:Key="in_Columns">[{"Type","PO","ReceiptNumber"}]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                      <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="346,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;PO:&quot; + in_strPONumber + &quot; Finalize Error, Error Text:&quot; + out_strOrderErrorMsg]" />
+                    </Sequence>
+                  </Sequence>
+                </If.Else>
               </If>
             </Sequence>
-            <If Condition="[blnError = False]" DisplayName="If NoError - Input Finalize, Order and UPC details" sap:VirtualizedContainerService.HintSize="850,1201" sap2010:WorkflowViewState.IdRef="If_5">
+            <If Condition="[blnError = False]" DisplayName="Input Finalize, Order,UPC details and Confirm the order- If no Error" sap:VirtualizedContainerService.HintSize="1803,7311" sap2010:WorkflowViewState.IdRef="If_5">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -241,7 +492,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Sequence DisplayName="Input Finalize, Order and UPC details" sap:VirtualizedContainerService.HintSize="881,2012" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                <Sequence DisplayName="Input Finalize, Order and UPC details" sap:VirtualizedContainerService.HintSize="1658,7164" sap2010:WorkflowViewState.IdRef="Sequence_7">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="x:String" Name="variable1" />
                   </Sequence.Variables>
@@ -250,35 +501,60 @@
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <Sequence DisplayName="Enter Finalize Details" sap:VirtualizedContainerService.HintSize="839,66" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                  <Sequence DisplayName="Enter Finalize Details and Capture Receipt Number" sap:VirtualizedContainerService.HintSize="1616,1336" sap2010:WorkflowViewState.IdRef="Sequence_11">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         <x:Boolean x:Key="IsPinned">False</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (2)&quot;" sap:VirtualizedContainerService.HintSize="484,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_3" Keys="2" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_6" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (1)&quot;" sap:VirtualizedContainerService.HintSize="484,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_4" Keys="1" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_7" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (1)&quot;" sap:VirtualizedContainerService.HintSize="484,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_5" Keys="1" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_8" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (0)&quot;" sap:VirtualizedContainerService.HintSize="484,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_6" Keys="0" TimeoutMS="5000" WaitType="READY" />
-                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_9" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="641,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_11" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
+                    <If Condition="[strScreenText.Contains(&quot;VNDR&quot;) = False]" DisplayName="If-Enter VNDR if it does not exist" sap:VirtualizedContainerService.HintSize="641,207" sap2010:WorkflowViewState.IdRef="If_21">
+                      <If.Then>
+                        <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (2)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_3" Keys="2" TimeoutMS="5000" WaitType="READY" />
+                      </If.Then>
+                    </If>
+                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="641,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_6" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (1)&quot;" sap:VirtualizedContainerService.HintSize="641,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_4" Keys="1" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="641,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_7" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (1)&quot;" sap:VirtualizedContainerService.HintSize="641,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_5" Keys="1" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="641,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_8" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (0)&quot;" sap:VirtualizedContainerService.HintSize="641,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_6" Keys="0" TimeoutMS="5000" WaitType="READY" />
+                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="641,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_9" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
+                    <If Condition="[blnAlreadyHaveReceiptNumber = False]" DisplayName="If - Get Receipt Number if its fresh" sap:VirtualizedContainerService.HintSize="641,234" sap2010:WorkflowViewState.IdRef="If_23">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <If.Then>
+                        <uit:TerminalGetTextAtPosition Column="7" DelayMS="300" DisplayName="Get Text at Position - Read the Receipt Number" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="TerminalGetTextAtPosition_1" Length="11" Row="1" Text="[strReceiptNumber]" TimeoutMS="5000" WaitType="COMPLETE" />
+                      </If.Then>
+                      <If.Else>
+                        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_37">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[strReceiptNumber]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">[out_strReceiptNumber]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </If.Else>
+                    </If>
                   </Sequence>
-                  <uit:TerminalGetTextAtPosition Column="7" DelayMS="300" DisplayName="Get Text at Position - Read the Receipt Number" sap:VirtualizedContainerService.HintSize="839,87" sap2010:WorkflowViewState.IdRef="TerminalGetTextAtPosition_1" Length="11" Row="1" Text="[strReceiptNumber]" TimeoutMS="5000" WaitType="COMPLETE" />
-                  <If Condition="[strReceiptNumber &lt;&gt; &quot;&quot; and strReceiptNumber.Length = 11]" DisplayName="Check Whether it has Receipt Number and Continue" sap:VirtualizedContainerService.HintSize="839,1687" sap2010:WorkflowViewState.IdRef="If_6">
+                  <If Condition="[strReceiptNumber &lt;&gt; &quot;&quot; and strReceiptNumber.Length = 11]" DisplayName="Check Whether it has Receipt Number and Continue" sap:VirtualizedContainerService.HintSize="1616,5696" sap2010:WorkflowViewState.IdRef="If_6">
                     <If.Then>
-                      <Sequence DisplayName="Input Order &amp; UPC Details" sap:VirtualizedContainerService.HintSize="418,1539" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                      <Sequence DisplayName="Input Order &amp; UPC Details" sap:VirtualizedContainerService.HintSize="1267,5549" sap2010:WorkflowViewState.IdRef="Sequence_8">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <Sequence DisplayName="Log Receipt Number" sap:VirtualizedContainerService.HintSize="376,66" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                        <Sequence DisplayName="Log Receipt Number" sap:VirtualizedContainerService.HintSize="1225,410" sap2010:WorkflowViewState.IdRef="Sequence_16">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
@@ -299,10 +575,10 @@
                             </ui:InvokeWorkflowFile.Arguments>
                           </ui:InvokeWorkflowFile>
                         </Sequence>
-                        <Sequence DisplayName="Enter Order Number" sap:VirtualizedContainerService.HintSize="376,452" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                        <Sequence DisplayName="Enter Order Number" sap:VirtualizedContainerService.HintSize="1225,66" sap2010:WorkflowViewState.IdRef="Sequence_9">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
@@ -311,7 +587,7 @@
                           <uit:TerminalSendKeys DelayMS="300" DisplayName="Enter 1111111111" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_7" Keys="1111111111" TimeoutMS="5000" WaitType="READY" />
                           <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_11" Key="F9" TimeoutMS="5000" WaitType="READY" />
                         </Sequence>
-                        <Sequence DisplayName="Enter UPC Details and Confirm Finalize" sap:VirtualizedContainerService.HintSize="376,451" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                        <Sequence DisplayName="Enter UPC Details" sap:VirtualizedContainerService.HintSize="1225,451" sap2010:WorkflowViewState.IdRef="Sequence_10">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -330,46 +606,40 @@
                           <uit:TerminalSendKeys DelayMS="300" DisplayName="Enter UPC number" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_8" Keys="[in_strUPCNumber]" TimeoutMS="5000" WaitType="READY" />
                           <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_12" Key="Transmit" TimeoutMS="5000" WaitType="READY" />
                         </Sequence>
-                        <Sequence DisplayName="Confirm Finalize" sap:VirtualizedContainerService.HintSize="376,252" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                        <Sequence DisplayName="Validate is there any error" sap:VirtualizedContainerService.HintSize="1225,1976" sap2010:WorkflowViewState.IdRef="Sequence_46">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_13" Key="F5" TimeoutMS="5000" WaitType="READY" />
-                          <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (Y)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_9" Keys="Y" TimeoutMS="5000" WaitType="READY" />
-                        </Sequence>
-                        <Sequence DisplayName="Verify the Order" sap:VirtualizedContainerService.HintSize="376,66" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                          <sap:WorkflowViewStateService.ViewState>
-                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                            </scg:Dictionary>
-                          </sap:WorkflowViewStateService.ViewState>
-                          <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,641" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                          <TryCatch DisplayName="Check NOF Exception - Try Catch" sap:VirtualizedContainerService.HintSize="750,51" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
                             <TryCatch.Try>
-                              <Sequence sap:VirtualizedContainerService.HintSize="376,414" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,251" sap2010:WorkflowViewState.IdRef="Sequence_25">
                                 <sap:WorkflowViewStateService.ViewState>
                                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                   </scg:Dictionary>
                                 </sap:WorkflowViewStateService.ViewState>
-                                <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_7" Text="定案已安排" TimeoutMS="10000" WaitType="READY" />
-                                <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_9" Text="有一NOF" TimeoutMS="3000" WaitType="READY" />
+                                <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_14">
                                   <Assign.To>
-                                    <OutArgument x:TypeArguments="x:Boolean">[out_blnOrderVerified]</OutArgument>
+                                    <OutArgument x:TypeArguments="x:Boolean">[blnNOFError]</OutArgument>
                                   </Assign.To>
                                   <Assign.Value>
                                     <InArgument x:TypeArguments="x:Boolean">True</InArgument>
                                   </Assign.Value>
                                 </Assign>
-                                <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_3" />
-                                <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_14" Key="F3" TimeoutMS="5000" WaitType="READY" />
                               </Sequence>
                             </TryCatch.Try>
                             <TryCatch.Catches>
-                              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
                                 <sap:WorkflowViewStateService.ViewState>
                                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -380,9 +650,9 @@
                                   <ActivityAction.Argument>
                                     <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
                                   </ActivityAction.Argument>
-                                  <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                                  <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_28">
                                     <Assign.To>
-                                      <OutArgument x:TypeArguments="x:Boolean">[out_blnOrderVerified]</OutArgument>
+                                      <OutArgument x:TypeArguments="x:Boolean">[blnNOFError]</OutArgument>
                                     </Assign.To>
                                     <Assign.Value>
                                       <InArgument x:TypeArguments="x:Boolean">False</InArgument>
@@ -392,33 +662,446 @@
                               </Catch>
                             </TryCatch.Catches>
                           </TryCatch>
+                          <TryCatch DisplayName="Try Catch - Multiple Vendors" sap:VirtualizedContainerService.HintSize="438,478" sap2010:WorkflowViewState.IdRef="TryCatch_4">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <TryCatch.Try>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,251" sap2010:WorkflowViewState.IdRef="Sequence_42">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_12" Text="供应商选择" TimeoutMS="500" WaitType="COMPLETE" />
+                                <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_29">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:Boolean">[blnVendorSelection]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                              </Sequence>
+                            </TryCatch.Try>
+                            <TryCatch.Catches>
+                              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <ActivityAction x:TypeArguments="s:Exception">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                  </ActivityAction.Argument>
+                                  <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_30">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Boolean">[blnVendorSelection]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                </ActivityAction>
+                              </Catch>
+                            </TryCatch.Catches>
+                          </TryCatch>
+                          <If Condition="[blnVendorSelection = True]" DisplayName="If-Press F3 if Vendor Selection" sap:VirtualizedContainerService.HintSize="750,51" sap2010:WorkflowViewState.IdRef="If_19">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <If.Then>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,153" sap2010:WorkflowViewState.IdRef="Sequence_43">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_38" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                              </Sequence>
+                            </If.Then>
+                          </If>
+                          <If Condition="[blnNOFError = True]" DisplayName="If - BE-Order-3" sap:VirtualizedContainerService.HintSize="750,51" sap2010:WorkflowViewState.IdRef="If_11">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <If.Then>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,556" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_23" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_24" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_25" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_26" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_15">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:String">[in_Config("BE-Order-3").ToString]</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                              </Sequence>
+                            </If.Then>
+                          </If>
+                          <Sequence DisplayName="BE-Order-5 - Validate Vendor Number" sap:VirtualizedContainerService.HintSize="750,1093" sap2010:WorkflowViewState.IdRef="Sequence_45">
+                            <Sequence.Variables>
+                              <Variable x:TypeArguments="scg:List(x:String)" Name="lstVendorNames" />
+                            </Sequence.Variables>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <If Condition="[blnAlreadyHaveReceiptNumber = False]" DisplayName="If - For fresh Order Entry" sap:VirtualizedContainerService.HintSize="708,1001" sap2010:WorkflowViewState.IdRef="If_22">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If.Then>
+                                <Sequence sap:VirtualizedContainerService.HintSize="563,854" sap2010:WorkflowViewState.IdRef="Sequence_47">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_10" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
+                                  <Assign sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="Assign_31">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:String">[strVendorName]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:String">[strScreenText.Substring(0,strScreenText.IndexOf("----商品详情")-2)]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                  <Assign sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="Assign_32">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:String">[strVendorName]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:String">[strVendorName.Substring(strVendorName.LastIndexOf(Environment.newline)).Trim]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                  <Assign sap:VirtualizedContainerService.HintSize="521,60" sap2010:WorkflowViewState.IdRef="Assign_33">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="scg:List(x:String)">[lstVendorNames]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="scg:List(x:String)">[in_Config("VendorNames").ToString.Split(","C).ToList()]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                  <If Condition="[lstVendorNames.Contains(strVendorName) = False]" DisplayName="If - BE-Order-5" sap:VirtualizedContainerService.HintSize="521,400" sap2010:WorkflowViewState.IdRef="If_20">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <If.Then>
+                                      <Sequence sap:VirtualizedContainerService.HintSize="376,253" sap2010:WorkflowViewState.IdRef="Sequence_44">
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                        <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_34">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:String">[in_Config("BE-Order-5").ToString]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                        <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_39" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                      </Sequence>
+                                    </If.Then>
+                                  </If>
+                                </Sequence>
+                              </If.Then>
+                            </If>
+                          </Sequence>
                         </Sequence>
+                        <If Condition="[out_strOrderErrorMsg = &quot;&quot;]" DisplayName="Enter Qty &amp; Confirm the Order - If No Exceptions" sap:VirtualizedContainerService.HintSize="1225,2394" sap2010:WorkflowViewState.IdRef="If_12">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <If.Then>
+                            <Sequence sap:VirtualizedContainerService.HintSize="1080,2247" sap2010:WorkflowViewState.IdRef="Sequence_27">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="1038,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_12" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
+                              <If Condition="[blnAlreadyHaveReceiptNumber = True and strScreenText.Contains(&quot;Prv&quot;) = True and strScreenText.Contains(&quot;加&quot;) = True]" DisplayName="If - Already Quatity exists, then Input '0' as quantity" sap:VirtualizedContainerService.HintSize="1038,207" sap2010:WorkflowViewState.IdRef="If_24">
+                                <If.Then>
+                                  <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys Quantity&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_17" Keys="0" TimeoutMS="5000" WaitType="READY" />
+                                </If.Then>
+                                <If.Else>
+                                  <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys Quantity&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_11" Keys="[in_intOrderQty.ToString]" TimeoutMS="5000" WaitType="READY" />
+                                </If.Else>
+                              </If>
+                              <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="1038,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_13" Key="F5" TimeoutMS="5000" WaitType="READY" />
+                              <Assign sap:VirtualizedContainerService.HintSize="1038,60" sap2010:WorkflowViewState.IdRef="Assign_19">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Boolean">[blnError]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <TryCatch DisplayName="Check whether Y/N appears - Try Catch" sap:VirtualizedContainerService.HintSize="1038,378" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <TryCatch.Try>
+                                  <Sequence sap:VirtualizedContainerService.HintSize="376,151" sap2010:WorkflowViewState.IdRef="Sequence_28">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_10" Text="(Y/N) ?" TimeoutMS="5000" WaitType="READY" />
+                                  </Sequence>
+                                </TryCatch.Try>
+                                <TryCatch.Catches>
+                                  <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <ActivityAction x:TypeArguments="s:Exception">
+                                      <ActivityAction.Argument>
+                                        <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                      </ActivityAction.Argument>
+                                      <Sequence sap:VirtualizedContainerService.HintSize="304,151" sap2010:WorkflowViewState.IdRef="Sequence_31">
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_17">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:Boolean">[blnError]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                      </Sequence>
+                                    </ActivityAction>
+                                  </Catch>
+                                </TryCatch.Catches>
+                              </TryCatch>
+                              <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="1038,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_8" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
+                              <If Condition="[strScreenText.Contains(&quot;商品超出数量&quot;) = True]" DisplayName="If - BE-Order-4 &amp; Unknown Exceptions" sap:VirtualizedContainerService.HintSize="1038,1074" sap2010:WorkflowViewState.IdRef="If_14">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <If.Then>
+                                  <Sequence sap:VirtualizedContainerService.HintSize="376,655" sap2010:WorkflowViewState.IdRef="Sequence_29">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_27" Key="F12" TimeoutMS="5000" WaitType="READY" />
+                                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_28" Key="F4" TimeoutMS="5000" WaitType="READY" />
+                                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (Y)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_12" Keys="Y" TimeoutMS="5000" WaitType="READY" />
+                                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_29" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_30" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                    <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_18">
+                                      <Assign.To>
+                                        <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                                      </Assign.To>
+                                      <Assign.Value>
+                                        <InArgument x:TypeArguments="x:String">[in_Config("BE-Order-4").ToString]</InArgument>
+                                      </Assign.Value>
+                                    </Assign>
+                                  </Sequence>
+                                </If.Then>
+                                <If.Else>
+                                  <Sequence sap:VirtualizedContainerService.HintSize="617,927" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <Delay DisplayName="Delay 2 seconds" Duration="00:00:02" sap:VirtualizedContainerService.HintSize="575,22" sap2010:WorkflowViewState.IdRef="Delay_3" />
+                                    <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="575,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_9" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
+                                    <If Condition="[strScreenText.Contains(&quot;(Y/N) ?&quot;) = False]" DisplayName="If - Unknown Exceptions" sap:VirtualizedContainerService.HintSize="575,711" sap2010:WorkflowViewState.IdRef="If_16">
+                                      <If.Then>
+                                        <Sequence DisplayName="Set Unknown Error" sap:VirtualizedContainerService.HintSize="430,564" sap2010:WorkflowViewState.IdRef="Sequence_33">
+                                          <sap:WorkflowViewStateService.ViewState>
+                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                            </scg:Dictionary>
+                                          </sap:WorkflowViewStateService.ViewState>
+                                          <Assign DisplayName="Mark as Unkown Error" sap:VirtualizedContainerService.HintSize="388,60" sap2010:WorkflowViewState.IdRef="Assign_21">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">["Unknown Exceptions: Smart Screen data:" + strScreenText]</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                          <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill - SMART System" sap:VirtualizedContainerService.HintSize="388,22" sap2010:WorkflowViewState.IdRef="KillProcess_3" ProcessName="r2win" />
+                                          <Sequence DisplayName="Log Details" sap:VirtualizedContainerService.HintSize="388,310" sap2010:WorkflowViewState.IdRef="Sequence_36">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Update into CSV File" sap:VirtualizedContainerService.HintSize="346,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Components\Common\CSV_Append_Status.xaml">
+                                              <ui:InvokeWorkflowFile.Arguments>
+                                                <InArgument x:TypeArguments="x:String" x:Key="in_CSVFilePath">[in_strLocalCSVLogFile]</InArgument>
+                                                <InArgument x:TypeArguments="s:Object[]" x:Key="in_ArrayItems">[{"Order Finalize",in_strPONumber,strScreenText}]</InArgument>
+                                                <InArgument x:TypeArguments="s:String[]" x:Key="in_Columns">[{"Type","PO","ReceiptNumber"}]</InArgument>
+                                              </ui:InvokeWorkflowFile.Arguments>
+                                            </ui:InvokeWorkflowFile>
+                                            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="346,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;PO:&quot; + in_strPONumber + &quot; Finalize Error, Error Text:&quot; + out_strOrderErrorMsg]" />
+                                          </Sequence>
+                                        </Sequence>
+                                      </If.Then>
+                                    </If>
+                                  </Sequence>
+                                </If.Else>
+                              </If>
+                              <If Condition="[out_strOrderErrorMsg = &quot;&quot;]" DisplayName="Confirm If No Error" sap:VirtualizedContainerService.HintSize="1038,51" sap2010:WorkflowViewState.IdRef="If_15">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <If.Then>
+                                  <Sequence sap:VirtualizedContainerService.HintSize="376,343" sap2010:WorkflowViewState.IdRef="Sequence_30">
+                                    <sap:WorkflowViewStateService.ViewState>
+                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      </scg:Dictionary>
+                                    </sap:WorkflowViewStateService.ViewState>
+                                    <uit:TerminalSendKeys DelayMS="300" DisplayName="&quot;Send Keys (Y)&quot;" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalSendKeys_9" Keys="Y" TimeoutMS="5000" WaitType="READY" />
+                                    <TryCatch DisplayName="Verify the Order - Try Catch" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <TryCatch.Try>
+                                        <Sequence sap:VirtualizedContainerService.HintSize="376,251" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                                          <sap:WorkflowViewStateService.ViewState>
+                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                            </scg:Dictionary>
+                                          </sap:WorkflowViewStateService.ViewState>
+                                          <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_7" Text="定案已安排" TimeoutMS="10000" WaitType="READY" />
+                                          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:Boolean">[out_blnOrderVerified]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                        </Sequence>
+                                      </TryCatch.Try>
+                                      <TryCatch.Catches>
+                                        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                                          <sap:WorkflowViewStateService.ViewState>
+                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                            </scg:Dictionary>
+                                          </sap:WorkflowViewStateService.ViewState>
+                                          <ActivityAction x:TypeArguments="s:Exception">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                            </ActivityAction.Argument>
+                                            <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="x:Boolean">[out_blnOrderVerified]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                          </ActivityAction>
+                                        </Catch>
+                                      </TryCatch.Catches>
+                                    </TryCatch>
+                                    <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_14" Key="F3" TimeoutMS="5000" WaitType="READY" />
+                                  </Sequence>
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </If.Then>
+                        </If>
                       </Sequence>
                     </If.Then>
                     <If.Else>
-                      <Sequence DisplayName="Handle Exceptions" sap:VirtualizedContainerService.HintSize="376,259" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                      <Sequence DisplayName="Handle Exceptions" sap:VirtualizedContainerService.HintSize="304,482" sap2010:WorkflowViewState.IdRef="Sequence_12">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <Sequence DisplayName="Log Exception" sap:VirtualizedContainerService.HintSize="334,66" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                        <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_5" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
+                        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[strScreenText]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">[strScreenText.Replace(Environment.NewLine,"/")]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <Assign DisplayName="Mark as Unkown Error" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[out_strOrderErrorMsg]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">["Unknown Exceptions: Smart Screen data:" + strScreenText]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill - SMART System" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="KillProcess_2" ProcessName="r2win" />
+                        <Sequence DisplayName="Log Details" sap:VirtualizedContainerService.HintSize="262,66" sap2010:WorkflowViewState.IdRef="Sequence_35">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <uit:TerminalGetText DelayMS="300" DisplayName="Get Text" sap:VirtualizedContainerService.HintSize="346,22" sap2010:WorkflowViewState.IdRef="TerminalGetText_5" Text="[strScreenText]" TimeoutMS="5000" WaitType="READY" />
-                          <Assign sap:VirtualizedContainerService.HintSize="346,60" sap2010:WorkflowViewState.IdRef="Assign_8">
-                            <Assign.To>
-                              <OutArgument x:TypeArguments="x:String">[strScreenText]</OutArgument>
-                            </Assign.To>
-                            <Assign.Value>
-                              <InArgument x:TypeArguments="x:String">[strScreenText.Replace(Environment.NewLine,"/")]</InArgument>
-                            </Assign.Value>
-                          </Assign>
-                          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="346,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;PO:&quot; + in_strPONumber + &quot; Finalize Entry Result:&quot; + strScreenText]" />
                           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Update into CSV File" sap:VirtualizedContainerService.HintSize="346,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Components\Common\CSV_Append_Status.xaml">
                             <ui:InvokeWorkflowFile.Arguments>
                               <InArgument x:TypeArguments="x:String" x:Key="in_CSVFilePath">[in_strLocalCSVLogFile]</InArgument>
@@ -426,8 +1109,8 @@
                               <InArgument x:TypeArguments="s:String[]" x:Key="in_Columns">[{"Type","PO","ReceiptNumber"}]</InArgument>
                             </ui:InvokeWorkflowFile.Arguments>
                           </ui:InvokeWorkflowFile>
+                          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="346,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;PO:&quot; + in_strPONumber + &quot; Finalize Entry Error Msg:&quot; + out_strOrderErrorMsg]" />
                         </Sequence>
-                        <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key - Goto Main Screen" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_15" Key="F3" TimeoutMS="5000" WaitType="READY" />
                       </Sequence>
                     </If.Else>
                   </If>

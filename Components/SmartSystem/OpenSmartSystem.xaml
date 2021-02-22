@@ -1,4 +1,16 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="OpenSmartSystem" this:OpenSmartSystem.in_intTimeoutSeconds="50" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uit="http://schemas.uipath.com/workflow/activities/terminal" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="OpenSmartSystem" this:OpenSmartSystem.in_intTimeoutSeconds="50"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:this="clr-namespace:"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:uit="http://schemas.uipath.com/workflow/activities/terminal"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_strStoreNumber" Type="InArgument(x:String)" />
     <x:Property Name="in_strStoreNumberFilePath" Type="InArgument(x:String)" />
@@ -9,7 +21,6 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>496,1067</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>OpenSmartSystem_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -65,26 +76,14 @@
       <AssemblyReference>UiPath.Word</AssemblyReference>
       <AssemblyReference>UiPath.Java.Activities</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="OpenSmartSystem" sap:VirtualizedContainerService.HintSize="476,1007" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="OpenSmartSystem" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strTerminalConnString" />
     </Sequence.Variables>
-    <sap:WorkflowViewStateService.ViewState>
-      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-      </scg:Dictionary>
-    </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Convert Seconds to milliseconds" sap:VirtualizedContainerService.HintSize="434,66" sap2010:WorkflowViewState.IdRef="Sequence_3">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Sequence DisplayName="Convert Seconds to milliseconds" sap2010:WorkflowViewState.IdRef="Sequence_3">
+      <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
         <Assign.To>
           <OutArgument x:TypeArguments="x:Int32">[in_intTimeoutSeconds]</OutArgument>
         </Assign.To>
@@ -93,9 +92,10 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill - SMART System" sap:VirtualizedContainerService.HintSize="434,22" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="r2win" />
-    <ui:WriteTextFile DisplayName="Write Store Number into Text File" FileName="[in_strStoreNumberFilePath]" sap:VirtualizedContainerService.HintSize="434,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[in_strStoreNumber]" />
-    <Assign DisplayName="Add one more \" sap:VirtualizedContainerService.HintSize="434,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+    <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill - SMART System" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="r2win" />
+    <ui:KillProcess ContinueOnError="{x:Null}" Process="{x:Null}" DisplayName="Kill UiPath.Terminal.Host" sap2010:WorkflowViewState.IdRef="KillProcess_2" ProcessName="UiPath.Terminal.Host" />
+    <ui:WriteTextFile DisplayName="Write Store Number into Text File" FileName="[in_strStoreNumberFilePath]" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[in_strStoreNumber]" />
+    <Assign DisplayName="Add one more \" sap2010:WorkflowViewState.IdRef="Assign_3">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[in_strSmartSystemSettingsFilePath]</OutArgument>
       </Assign.To>
@@ -103,25 +103,58 @@
         <InArgument x:TypeArguments="x:String">[in_strSmartSystemSettingsFilePath.Replace("\","\\")]</InArgument>
       </Assign.Value>
     </Assign>
-    <uit:TerminalSession ContinueOnError="{x:Null}" ExistingConnection="{x:Null}" CloseConnection="False" ConnectionString="[&quot;{'AttachExisting':false,'ConnectionType':0,'EhllBasicMode':false,'EhllDll':null,'EhllEnhanced':true,'EhllFunction':'hllapi','EhllSession':'A','Host':null,'Mode':1,'Port':23,'Profile':'&quot; + in_strSmartSystemSettingsFilePath + &quot;','ProviderType':7,'ShowTerminal':true,'TerminalType':0}&quot;]" DelayMS="1000" DisplayName="Terminal Session - Open Smart System" sap:VirtualizedContainerService.HintSize="434,475" sap2010:WorkflowViewState.IdRef="TerminalSession_4" OutputConnection="[out_TerminalSmartSystem]" TimeoutMS="50000">
+    <uit:TerminalSession ContinueOnError="{x:Null}" ExistingConnection="{x:Null}" CloseConnection="False" ConnectionString="[&quot;{'AttachExisting':false,'ConnectionType':0,'EhllBasicMode':false,'EhllDll':null,'EhllEnhanced':true,'EhllFunction':'hllapi','EhllSession':'A','Host':null,'Mode':1,'Port':23,'Profile':'&quot; + in_strSmartSystemSettingsFilePath + &quot;','ProviderType':7,'ShowTerminal':true,'TerminalType':0}&quot;]" DelayMS="1000" DisplayName="Terminal Session - Open Smart System" sap2010:WorkflowViewState.IdRef="TerminalSession_4" OutputConnection="[out_TerminalSmartSystem]" TimeoutMS="50000">
       <uit:TerminalSession.Body>
         <ActivityAction x:TypeArguments="uit:TerminalConnection">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="uit:TerminalConnection" Name="terminalSession" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,376" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <Delay Duration="00:00:05" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
-            <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_1" Text="Display Notices" TimeoutMS="[in_intTimeoutSeconds]" WaitType="READY" />
-            <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_1" Key="F3" TimeoutMS="[in_intTimeoutSeconds]" WaitType="READY" />
-            <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_2" />
+          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Delay Duration="00:00:05" sap2010:WorkflowViewState.IdRef="Delay_1" />
+            <uit:TerminalWaitScreenText MatchCase="{x:Null}" DelayMS="300" DisplayName="Wait Screen Text" sap2010:WorkflowViewState.IdRef="TerminalWaitScreenText_1" Text="Display Notices" TimeoutMS="[in_intTimeoutSeconds]" WaitType="READY" />
+            <uit:TerminalSendControlKey DelayMS="1000" DisplayName="Send Control Key" sap2010:WorkflowViewState.IdRef="TerminalSendControlKey_1" Key="F3" TimeoutMS="[in_intTimeoutSeconds]" WaitType="READY" />
+            <Delay Duration="00:00:02" sap2010:WorkflowViewState.IdRef="Delay_2" />
           </Sequence>
         </ActivityAction>
       </uit:TerminalSession.Body>
     </uit:TerminalSession>
+    <sads:DebugSymbol.Symbol>d2FDOlxVc2Vyc1xTVkNBQUE4XERvY3VtZW50c1xVaVBhdGhcMTEyOF9DTl9NRVJDSF9FQ19KRFxDb21wb25lbnRzXFNtYXJ0U3lzdGVtXE9wZW5TbWFydFN5c3RlbS54YW1sIgFvAXIBAlEDeg4CAQFVBV4QAgEmXwVfpwECASNgBWDAAQIBIWEFYb0BAgEcYgVpDgIBF2oFeBsCAQJWB10QAgEnXzhfPgIBJV+dAV+kAQIBJGCnAWC9AQIBImGlAWG6AQIBH2FQYW0CAR1nMGdlAgEaZDFkVAIBGGp8aq8DAgEVargDar4DAgEUat0EauQEAgETarcEatIEAgERcAt1FgIBA1sxW04CASpYMlhIAgEocQ1xVAIBD3INcvMBAgEKcw1z0QECAQZ0DXRUAgEEcR1xJwIBEHJGcksCAQ5yxwFy3wECAQxyqwFyvAECAQtzMXM3AgEJc6UBc70BAgEHdB10JwIBBQ==</sads:DebugSymbol.Symbol>
   </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="262,60" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="434,66">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="KillProcess_1" sap:VirtualizedContainerService.HintSize="434,22" />
+      <sap2010:ViewStateData Id="KillProcess_2" sap:VirtualizedContainerService.HintSize="434,22" />
+      <sap2010:ViewStateData Id="WriteTextFile_1" sap:VirtualizedContainerService.HintSize="434,132" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="434,60" />
+      <sap2010:ViewStateData Id="Delay_1" sap:VirtualizedContainerService.HintSize="334,22" />
+      <sap2010:ViewStateData Id="TerminalWaitScreenText_1" sap:VirtualizedContainerService.HintSize="334,59" />
+      <sap2010:ViewStateData Id="TerminalSendControlKey_1" sap:VirtualizedContainerService.HintSize="334,61" />
+      <sap2010:ViewStateData Id="Delay_2" sap:VirtualizedContainerService.HintSize="334,22" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="376,376">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TerminalSession_4" sap:VirtualizedContainerService.HintSize="434,475" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="476,1069">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="OpenSmartSystem_1" sap:VirtualizedContainerService.HintSize="496,1209" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
